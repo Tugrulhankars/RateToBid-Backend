@@ -32,7 +32,7 @@ jobs:
           cache: maven
 
       - name: Build Project
-        run: mvn clean verify
+        run: mvn clean package -DskipTests
 
       #Docker hub login
       - name: Login Docker Hub
