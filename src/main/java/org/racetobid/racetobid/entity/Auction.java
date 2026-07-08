@@ -19,6 +19,8 @@ public class Auction extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String auctionTitle;
+
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
@@ -29,7 +31,7 @@ public class Auction extends Auditable {
     @JoinColumn(name = "auction_item_id")
     private AuctionItem auctionItem;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

@@ -16,8 +16,8 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Tüm origin'lere izin ver (allowedOriginPatterns kullanarak)
-        configuration.setAllowedOriginPatterns(List.of("*"));
+        // Origin ayarı
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         
         // İzin verilen HTTP metodları
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
@@ -26,7 +26,7 @@ public class CorsConfig {
         configuration.setAllowedHeaders(Arrays.asList("*"));
         
         // Credentials gönderilmesine izin ver
-        //configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true);
         
         // Preflight request'lerin cache süresi
         configuration.setMaxAge(3600L);

@@ -33,7 +33,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // Frontend şöyle bağlanacak: new SockJS('http://localhost:8080/ws-race?token=xyz');
         registry.addEndpoint("/ws-race")
-                .setAllowedOriginPatterns("*")
+                .setAllowedOrigins("http://localhost:5173")
                 .addInterceptors(jwtHandshakeInterceptor)
                 .withSockJS();
     }

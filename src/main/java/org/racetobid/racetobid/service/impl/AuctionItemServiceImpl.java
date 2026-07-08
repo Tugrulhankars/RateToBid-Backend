@@ -19,22 +19,35 @@ public class AuctionItemServiceImpl implements AuctionItemService {
     private final AuctionItemRepository auctionItemRepository;
     private final CategoryService categoryService;
     private final UserRepository userRepository;
+    private final org.racetobid.racetobid.repository.AuctionRepository auctionRepository;
 
-    public AuctionItemServiceImpl(AuctionItemRepository auctionItemRepository, CategoryService categoryService, UserRepository userRepository) {
+    public AuctionItemServiceImpl(AuctionItemRepository auctionItemRepository, CategoryService categoryService, UserRepository userRepository, org.racetobid.racetobid.repository.AuctionRepository auctionRepository) {
         this.auctionItemRepository = auctionItemRepository;
         this.categoryService = categoryService;
         this.userRepository = userRepository;
+        this.auctionRepository = auctionRepository;
     }
 
     @Override
     public String addAuctionItem(CreateAuctionItemRequest request) {
         Optional<Category> category= Optional.ofNullable(categoryService.getCategoryById(request.getCategoryId()));
         if(category.isEmpty()){
-            return "Category not found";
+            throw new IllegalArgumentException("Category not found");
         }
 
-        User user=userRepository.findById(request.getSellerId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = null;
+        if (request.getSellerId() != null) {
+            user = userRepository.findById(request.getSellerId()).orElse(null);
+        }
+        if (user == null) {
+            org.springframework.security.core.Authentication auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.isAuthenticated() && !auth.getName().equals("anonymousUser")) {
+                user = userRepository.findByEmail(auth.getName()).orElse(null);
+            }
+        }
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
 
 
         AuctionItem auctionItem=new AuctionItem();
@@ -44,7 +57,9 @@ public class AuctionItemServiceImpl implements AuctionItemService {
         auctionItem.setCurrentPrice(request.getCurrentPrice());
         auctionItem.setSeller(user);
         auctionItem.setCategory(category.get());
-        return "";
+        
+        auctionItemRepository.save(auctionItem);
+        return String.valueOf(auctionItem.getId());
     }
 
     @Override
@@ -74,6 +89,10 @@ public class AuctionItemServiceImpl implements AuctionItemService {
 
     @Override
     public List<AuctionItem> getAuctionItemsByAuctionId(Long auctionId) {
+        Optional<org.racetobid.racetobid.entity.Auction> auction = auctionRepository.findById(auctionId);
+        if (auction.isPresent() && auction.get().getAuctionItem() != null) {
+            return List.of(auction.get().getAuctionItem());
+        }
         return List.of();
     }
 }

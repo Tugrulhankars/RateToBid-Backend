@@ -2,6 +2,7 @@ package org.racetobid.racetobid.service;
 
 import org.racetobid.racetobid.dto.request.CreateAuctionRequest;
 import org.racetobid.racetobid.entity.Auction;
+import org.racetobid.racetobid.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,10 @@ public interface AuctionService {
     String updateAuction(Long id, CreateAuctionRequest request);
     String deleteAuction(Long id);
     List<Auction> getAuctionsByCategoryId(Long categoryId);
+    List<Auction> getMyAuctions(User user);
+    List<Auction> getBidAuctions(User user);
+    List<Auction> getActiveAuctions();
+    List<Auction> getPastAuctions();
+    List<Auction> getScheduledAuctions();
+    String cancelAuction(Long auctionId, String userEmail);
 }

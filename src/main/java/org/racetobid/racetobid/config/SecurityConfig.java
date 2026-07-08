@@ -61,7 +61,14 @@ public class SecurityConfig {
                         .requestMatchers(
                             "/", "/login", "/register", "/auctions", "/auction/**", "/css/**", "/js/**",
                             "/api/auth/**", "/api/test/**",
-                            "/ws-race/**", "/ws-race", "/app/**", "/topic/**", "/queue/**"
+                            "/ws-race/**", "/ws-race", "/app/**", "/topic/**", "/queue/**",
+                            "/swagger-ui/**", "/v3/api-docs/**", "/swagger/**",
+                            // Public read-only endpoints
+                            "/api/v1/auctions/**",
+                            "/api/v1/auction-items/**",
+                            "/api/v1/categories/**",
+                            "/api/v1/bidding/getAllBidsByAuctionItemId",
+                            "/error"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

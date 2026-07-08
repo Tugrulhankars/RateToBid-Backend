@@ -14,13 +14,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class WebSocketController {
-    private static final Logger log = LoggerFactory.getLogger(WebSocketController.class);
+public class BiddingWebSocketController {
+    private static final Logger log = LoggerFactory.getLogger(BiddingWebSocketController.class);
 
     private final BiddingService biddingService;
     private final SimpMessagingTemplate messagingTemplate;
 
-    public WebSocketController(BiddingService biddingService, SimpMessagingTemplate messagingTemplate) {
+    public BiddingWebSocketController(BiddingService biddingService, SimpMessagingTemplate messagingTemplate) {
         this.biddingService = biddingService;
         this.messagingTemplate = messagingTemplate;
     }

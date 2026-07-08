@@ -4,6 +4,7 @@ import org.racetobid.racetobid.dto.request.CreateCategoryRequest;
 import org.racetobid.racetobid.entity.Category;
 import org.racetobid.racetobid.service.CategoryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class CategoryController {
 
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> createCategory(@RequestBody CreateCategoryRequest request){
         String response = categoryService.createCategory(request);
         return ResponseEntity.ok(response);

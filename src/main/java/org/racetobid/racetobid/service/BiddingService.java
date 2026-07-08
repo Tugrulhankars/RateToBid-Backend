@@ -9,4 +9,5 @@ import java.util.List;
 public interface BiddingService {
     BidResponse placeBid(BidRequest request, String userEmail);
     List<Bid> getAllBidsByAuctionItemId(Long auctionItemId);
+    String withdrawBid(Long bidId, String userEmail);
 }

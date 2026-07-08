@@ -10,10 +10,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthResponse {
+    private Long id;
     private String accessToken;
     private String refreshToken;
     private String email;
     private String firstName;
     private String lastName;
+    private String userType;
+    private String storeName;
 }
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!--
+        OpenTelemetry Logback Appender:
+        Logback log kayıtlarını OTel SDK üzerinden SigNoz'a iletir.
+        OpenTelemetryConfig.setupLoggingAppender() @PostConstruct ile SDK'yı bağlar.
+    -->
+    <appender name="OpenTelemetry" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
+        <!-- Logback MDC alanlarını OTel log attribute olarak gönder -->
+        <captureMdcAttributes>*</captureMdcAttributes>
+        <!-- Throwable stack trace'ini OTel'e dahil et -->
+        <captureExperimentalAttributes>true</captureExperimentalAttributes>
+    </appender>
+
+    <!-- Konsol çıktısı (geliştirme ortamı için) -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Uygulama logları: hem konsola hem SigNoz'a -->
+    <root level="INFO">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="OpenTelemetry"/>
+    </root>
+
+    <!-- RaceToBid paket logları DEBUG seviyesinde -->
+    <logger name="org.racetobid" level="DEBUG" additivity="false">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="OpenTelemetry"/>
+    </logger>
+
+    <!-- Spring ve Hibernate gürültüsünü azalt -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+
+</configuration>

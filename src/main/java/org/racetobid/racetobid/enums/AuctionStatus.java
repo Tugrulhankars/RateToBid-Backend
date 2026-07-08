@@ -5,5 +5,6 @@ public enum AuctionStatus {
     SCHEDULED,
     ACTIVE,
     FINISHED,
-    CANCELLED
+    CANCELLED,
+    PENDING
 }

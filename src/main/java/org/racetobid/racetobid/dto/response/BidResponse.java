@@ -16,4 +16,6 @@ public class BidResponse {
     private Long id;
     private BigDecimal currentPrice;
     private String username;
+    private String firstName;
+    private String lastName;
 }
